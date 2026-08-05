@@ -1,4 +1,4 @@
-package com.gauthier.lab.collections;
+package com.gauthier.lab.stream;
 
 import java.util.Arrays;
 import java.util.Collection;
