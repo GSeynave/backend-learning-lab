@@ -10,11 +10,11 @@ public class WorkflowService {
         this.betaService = betaService;
     }
 
-    public void hello(){
+    public void hello() {
         // Dumb process assumming aplha needed beta and vice versa.
         // just to demonstrate that an orchestrator is a right answer to circular dependency
         // that often is from an architectural cause.
         alphaService.hello();
-       betaService.hello();
+        betaService.hello();
     }
 }
