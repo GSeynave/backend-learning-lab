@@ -1,9 +1,6 @@
 package com.gauthier.lab.di.Exercice;
 
-import com.gauthier.lab.di.ApplicationConfig;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 public class DIExercice {
 
