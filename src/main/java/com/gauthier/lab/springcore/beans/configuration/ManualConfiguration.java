@@ -7,10 +7,10 @@ import org.springframework.context.annotation.Configuration;
 public class ManualConfiguration {
 
     @Bean
-    public DemoRepository demoRepository(){
+    public ConfigurationDemoRepository manualConfigurationDemoRepository(){
         System.out.println("DemoRepository FACTORY");
 
-        return new DemoRepository();
+        return new ConfigurationDemoRepository();
     }
 
 }

@@ -1,4 +1,4 @@
 package com.gauthier.lab.springcore.beans.configuration;
 
-public class DemoRepository {
+public class ConfigurationDemoRepository {
 }

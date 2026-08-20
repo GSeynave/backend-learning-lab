@@ -12,23 +12,27 @@ import com.gauthier.lab.springcore.di.constructorinjection.ConstructorInjectionM
 import com.gauthier.lab.springcore.di.fieldsetterinjection.FieldSetterInjectionMain;
 import com.gauthier.lab.springcore.scopes.prototype.PrototypeMain;
 import com.gauthier.lab.springcore.scopes.singleton.SingletonMain;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
+/**
+ * The executable web application.
+ *
+ * <p>Spring Core exercises deliberately create their own small application
+ * contexts. They are not part of this application's component scan, otherwise
+ * their alternative beans would all be registered together.</p>
+ */
+@SpringBootApplication(scanBasePackages = "com.gauthier.lab.web")
 public class App {
     public static void main(String[] args) {
-        //SpringApplication.run(App.class, args);
-        //DIMain diMain = new DIMain();
-        //diMain.execute();
-
+        SpringApplication.run(App.class, args);
 
         beanModule(false);
-
         scopes(true);
     }
 
     private static void scopes(Boolean enable) {
-        if (!enable){
+        if (!enable) {
             return;
         }
         SingletonMain singletonMain = new SingletonMain();
@@ -53,13 +57,11 @@ public class App {
         CircularDependencyMain circularDependencyMain = new CircularDependencyMain();
         circularDependencyMain.execute();
 
-
         BeanResolutionMain beanResolutionMain = new BeanResolutionMain();
         beanResolutionMain.execute();
 
         ComponentScanningMain componentScanningMain = new ComponentScanningMain();
         componentScanningMain.execute();
-
 
         BeanCreationMain beanCreationMain = new BeanCreationMain();
         beanCreationMain.execute();
@@ -76,5 +78,4 @@ public class App {
         FactoryMain factoryMain = new FactoryMain();
         factoryMain.execute();
     }
-
 }

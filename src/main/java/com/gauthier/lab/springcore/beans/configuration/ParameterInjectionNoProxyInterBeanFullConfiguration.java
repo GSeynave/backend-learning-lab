@@ -7,12 +7,13 @@ import org.springframework.context.annotation.Configuration;
 public class ParameterInjectionNoProxyInterBeanFullConfiguration {
 
     @Bean
-    public DemoRepository demoRepository(){
+    public ConfigurationDemoRepository paramInjectionDemoRepository(){
         System.out.println("DemoRepository FACTORY");
-        return new DemoRepository();
+        return new ConfigurationDemoRepository();
     }
 
-    @Bean DemoService demoService(DemoRepository repository){
+    @Bean
+    DemoService paramInjectionDemoService(ConfigurationDemoRepository repository){
         return new DemoService(repository);
     }
 }

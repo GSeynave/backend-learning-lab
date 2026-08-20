@@ -2,10 +2,10 @@ package com.gauthier.lab.springcore.beans.bean;
 
 import java.util.Objects;
 
-public class AuditService {
+public class BeanAuditService {
     private final AuditRepository repository;
 
-    public AuditService(AuditRepository repository) {
+    public BeanAuditService(AuditRepository repository) {
         this.repository = Objects.requireNonNull(repository);
     }
 

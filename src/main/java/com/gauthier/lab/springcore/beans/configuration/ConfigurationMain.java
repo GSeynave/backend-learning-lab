@@ -37,7 +37,7 @@ public class ConfigurationMain {
     private static void fullInterBeanCall() {
         try (var context = new AnnotationConfigApplicationContext(InterBeanFullConfiguration.class)) {
             System.out.println("Exercise B - Full Inter Bean Call");
-            DemoRepository repoFromContext = context.getBean(DemoRepository.class);
+            ConfigurationDemoRepository repoFromContext = context.getBean(ConfigurationDemoRepository.class);
             DemoService service = context.getBean(DemoService.class);
             System.out.println(repoFromContext == service.repository());
 
@@ -50,7 +50,7 @@ public class ConfigurationMain {
     private static void noProxyFullInterBeanCall() {
         try (var context = new AnnotationConfigApplicationContext(NoProxyInterBeanFullConfiguration.class)) {
             System.out.println("Exercise C - No Proxy Full Inter Bean Call");
-            DemoRepository repoFromContext = context.getBean(DemoRepository.class);
+            ConfigurationDemoRepository repoFromContext = context.getBean(ConfigurationDemoRepository.class);
             DemoService service = context.getBean(DemoService.class);
             System.out.println(repoFromContext == service.repository());
 
@@ -63,7 +63,7 @@ public class ConfigurationMain {
     private static void parameterInjectionNoProxyFullInterBeanCall() {
         try (var context = new AnnotationConfigApplicationContext(ParameterInjectionNoProxyInterBeanFullConfiguration.class)) {
             System.out.println("Exercise D - Parameter Injection No Proxy Full Inter Bean Call");
-            DemoRepository repoFromContext = context.getBean(DemoRepository.class);
+            ConfigurationDemoRepository repoFromContext = context.getBean(ConfigurationDemoRepository.class);
             DemoService service = context.getBean(DemoService.class);
             System.out.println(repoFromContext == service.repository());
 
@@ -77,8 +77,8 @@ public class ConfigurationMain {
         try  {
             System.out.println("Exercise E - Manual configuration");
             ManualConfiguration manualConfiguration = new ManualConfiguration();
-            DemoRepository first = manualConfiguration.demoRepository();
-            DemoRepository second = manualConfiguration.demoRepository();
+            ConfigurationDemoRepository first = manualConfiguration.manualConfigurationDemoRepository();
+            ConfigurationDemoRepository second = manualConfiguration.manualConfigurationDemoRepository();
             System.out.println(first == second);
 
         } catch (Exception e) {

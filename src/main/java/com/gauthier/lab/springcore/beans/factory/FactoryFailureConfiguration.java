@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 public class FactoryFailureConfiguration {
 
     @Bean
-    DemoClient demoClient(){
+    DemoClient failureDemoClient(){
         throw  new IllegalStateException("Factory creation failed");
     }
 }

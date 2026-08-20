@@ -6,11 +6,11 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class DIExerciseMissingBeanConfig {
     @Bean
-    DIExercice.VatCalculator vatCalculator(){
+    DIExercice.VatCalculator missingVatCalculator(){
         return new DIExercice.FrenchVatCalculator();
     }
     @Bean
-    DIExercice.InvoiceService invoiceService(DIExercice.VatCalculator vatCalculator, DIExercice.InvoiceRepository invoiceRepository){
+    DIExercice.InvoiceService missingInvoiceService(DIExercice.VatCalculator vatCalculator, DIExercice.InvoiceRepository invoiceRepository){
         return new DIExercice.InvoiceService(vatCalculator, invoiceRepository);
     }
 

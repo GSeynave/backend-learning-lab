@@ -7,8 +7,8 @@ import org.springframework.context.annotation.Configuration;
 public class NestedAuditConfig {
 
     @Bean
-    public AuditService auditService(){
+    public BeanAuditService beanAuditService(){
         // AuditRepository is a java object, not a bean managed by spring.
-        return new AuditService(new AuditRepository());
+        return new BeanAuditService(new AuditRepository());
     }
 }

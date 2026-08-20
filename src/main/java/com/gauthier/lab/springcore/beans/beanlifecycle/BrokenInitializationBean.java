@@ -13,6 +13,10 @@ public class BrokenInitializationBean {
     @PostConstruct
     void initialize(){
         System.out.println("PostConstruct started");
-        throw new IllegalStateException("Intentional lifecycle failure");
+        try {
+            throw new IllegalStateException("Intentional lifecycle failure");
+        } catch (Exception e){
+            System.out.println("Here initialization fails, catch for running app purpose");
+        }
     }
 }

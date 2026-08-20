@@ -7,12 +7,12 @@ import org.springframework.context.annotation.Configuration;
 public class InstanceFactoryConfiguration {
 
     @Bean
-    ClientFactory clientFactory(){
+    ClientFactory instanceClientFactory(){
         return new ClientFactory();
     }
 
     @Bean
-    DemoClient demoClient(ClientFactory clientFactory){
+    DemoClient instanceDemoClient(ClientFactory clientFactory){
         return clientFactory.createDemoClient();
     }
 }

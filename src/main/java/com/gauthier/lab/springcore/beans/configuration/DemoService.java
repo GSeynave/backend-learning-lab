@@ -1,13 +1,13 @@
 package com.gauthier.lab.springcore.beans.configuration;
 
 public class DemoService {
-    private final DemoRepository repository;
+    private final ConfigurationDemoRepository repository;
 
-    public DemoService(DemoRepository repository) {
+    public DemoService(ConfigurationDemoRepository repository) {
         this.repository = repository;
     }
 
-    public DemoRepository repository(){
+    public ConfigurationDemoRepository repository(){
         return repository;
     }
 }

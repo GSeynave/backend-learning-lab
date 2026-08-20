@@ -12,7 +12,7 @@ public class AuditConfig {
     }
 
     @Bean
-    public AuditService auditService(AuditRepository repository){
-        return new AuditService(repository);
+    public BeanAuditService auditService(AuditRepository repository){
+        return new BeanAuditService(repository);
     }
 }

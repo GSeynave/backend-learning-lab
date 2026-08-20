@@ -37,7 +37,7 @@ public class BeanMain {
     private static void methodParameterDI() {
         try ( var context = new AnnotationConfigApplicationContext(AuditConfig.class)){
             System.out.println("Exercise B - Method Parameter DI");
-            var service = context.getBean(AuditService.class);
+            var service = context.getBean(BeanAuditService.class);
         } catch (Exception e){
             System.out.println("Bean  main exception : " + e);
         }
@@ -47,7 +47,7 @@ public class BeanMain {
     private static void nestedDI() {
         try ( var context = new AnnotationConfigApplicationContext(NestedAuditConfig.class)){
             System.out.println("Exercise C - Nested DI");
-            var service = context.getBean(AuditService.class);
+            var service = context.getBean(BeanAuditService.class);
             var repository = context.getBean(AuditRepository.class);
         } catch (Exception e){
             System.out.println("Bean  main exception : " + e);

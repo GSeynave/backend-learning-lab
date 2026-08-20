@@ -9,17 +9,17 @@ public class NotificationConfig {
 
     @Primary
     @Bean
-    public MessageSender emailSender(){
+    public MessageSender beanEmailSender(){
         return new EmailSender();
     }
 
     @Bean
-    public SmsSender smsSender(){
+    public SmsSender beanSmsSender(){
         return new SmsSender();
     }
 
     @Bean
-    public NotificationService notificationService(MessageSender sender){
+    public NotificationService beanNotificationService(MessageSender sender){
         return new NotificationService(sender);
     }
 

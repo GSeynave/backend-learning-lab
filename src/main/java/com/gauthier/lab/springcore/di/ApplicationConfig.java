@@ -7,17 +7,17 @@ import org.springframework.context.annotation.Configuration;
 public class ApplicationConfig {
 
     @Bean
-    PaymentGateway paymentGateway(){
+    PaymentGateway diPaymentGateway(){
         return new ConsolePaymentGateway();
     }
 
     @Bean
-    OrderRepository orderRepository(){
+    OrderRepository diOrderRepository(){
         return new InMemoryOrderRepository();
     }
 
     @Bean
-    CheckoutService checkoutService(PaymentGateway paymentGateway, OrderRepository orderRepository){
+    CheckoutService diCheckoutService(PaymentGateway paymentGateway, OrderRepository orderRepository){
         return new CheckoutService(paymentGateway, orderRepository);
     }
 }

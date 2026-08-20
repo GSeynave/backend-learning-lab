@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 public class FactoryMetadataConfig {
 
     @Bean
-    public DemoClient demoClient(){
+    public DemoClient factoryDemoClient(){
         return new DemoClient();
     }
 }

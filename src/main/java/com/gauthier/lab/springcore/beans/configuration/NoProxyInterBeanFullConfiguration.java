@@ -7,12 +7,12 @@ import org.springframework.context.annotation.Configuration;
 public class NoProxyInterBeanFullConfiguration {
 
     @Bean
-    public DemoRepository demoRepository(){
+    public ConfigurationDemoRepository noProxyInterBeanDemoRepository(){
         System.out.println("DemoRepository FACTORY");
-        return new DemoRepository();
+        return new ConfigurationDemoRepository();
     }
 
-    @Bean DemoService demoService(){
-        return new DemoService(demoRepository());
+    @Bean DemoService noProxyInterBeanDemoService(){
+        return new DemoService(noProxyInterBeanDemoRepository());
     }
 }

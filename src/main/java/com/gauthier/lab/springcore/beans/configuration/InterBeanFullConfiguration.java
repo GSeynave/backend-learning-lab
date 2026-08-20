@@ -7,12 +7,12 @@ import org.springframework.context.annotation.Configuration;
 public class InterBeanFullConfiguration {
 
     @Bean
-    public DemoRepository demoRepository(){
+    public ConfigurationDemoRepository configurationDemoRepository(){
         System.out.println("DemoRepository FACTORY");
-        return new DemoRepository();
+        return new ConfigurationDemoRepository();
     }
 
-    @Bean DemoService demoService(){
-        return new DemoService(demoRepository());
+    @Bean DemoService configurationDemoService(){
+        return new DemoService(configurationDemoRepository());
     }
 }
