@@ -26,4 +26,9 @@ public class ScopeController {
         System.out.println("Request scope proxy : " + probe.getClass().getName());
         return probe.id();
     }
+
+    @GetMapping("/session")
+    public UUID sessionScope(){
+        return probe.id();
+    }
 }
