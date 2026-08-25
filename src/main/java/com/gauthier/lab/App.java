@@ -6,6 +6,9 @@ import com.gauthier.lab.springcore.beans.beanlifecycle.BeanLifecycleMain;
 import com.gauthier.lab.springcore.beans.componentscanning.ComponentScanningMain;
 import com.gauthier.lab.springcore.beans.configuration.ConfigurationMain;
 import com.gauthier.lab.springcore.beans.factory.FactoryMain;
+import com.gauthier.lab.springcore.configuration.applicationyml.ConfigurationYAMLMain;
+import com.gauthier.lab.springcore.configuration.applicationyml.ConfigurationYamlProbe;
+import com.gauthier.lab.springcore.configuration.profiles.ProfilesMain;
 import com.gauthier.lab.springcore.di.beanresolution.BeanResolutionMain;
 import com.gauthier.lab.springcore.di.circulardependency.CircularDependencyMain;
 import com.gauthier.lab.springcore.di.constructorinjection.ConstructorInjectionMain;
@@ -28,9 +31,20 @@ public class App {
         SpringApplication.run(App.class, args);
 
         beanModule(false);
-        scopes(true);
+        scopes(false);
+        applicationProperties(true);
     }
 
+    private static void applicationProperties(Boolean enable) {
+        if (!enable) {
+            return;
+        }
+        ConfigurationYAMLMain configurationYAMLMain = new ConfigurationYAMLMain();
+        configurationYAMLMain.execute();
+
+        ProfilesMain profilesMain = new ProfilesMain();
+        profilesMain.execute();
+    }
     private static void scopes(Boolean enable) {
         if (!enable) {
             return;

@@ -1,0 +1,7 @@
+academy:
+  name: Spring Backend Academy
+  description: "${academy.name} Core Training"
+  student: "${ACADEMY_STUDENT:anonymous}"
+  lesson-duration: 60
+
+  mode: production
