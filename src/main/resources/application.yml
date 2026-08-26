@@ -6,3 +6,6 @@ academy:
 
   mode: development
   timeout: 10
+  env-var:
+    mode: yaml
+    max-students: 10
