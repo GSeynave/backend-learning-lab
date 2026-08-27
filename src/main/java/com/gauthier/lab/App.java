@@ -8,6 +8,7 @@ import com.gauthier.lab.springcore.beans.configuration.ConfigurationMain;
 import com.gauthier.lab.springcore.beans.factory.FactoryMain;
 import com.gauthier.lab.springcore.configuration.applicationyml.ConfigurationYAMLMain;
 import com.gauthier.lab.springcore.configuration.applicationyml.ConfigurationYamlProbe;
+import com.gauthier.lab.springcore.configuration.configurationproperties.ConfigurationPropertiesMain;
 import com.gauthier.lab.springcore.configuration.environmentvar.EnvironmentVariableMain;
 import com.gauthier.lab.springcore.configuration.profiles.ProfilesMain;
 import com.gauthier.lab.springcore.di.beanresolution.BeanResolutionMain;
@@ -48,6 +49,9 @@ public class App {
 
         EnvironmentVariableMain environmentVariableMain = new EnvironmentVariableMain();
         environmentVariableMain.execute();
+
+        ConfigurationPropertiesMain configurationPropertiesMain = new ConfigurationPropertiesMain();
+        configurationPropertiesMain.execute();
     }
     private static void scopes(Boolean enable) {
         if (!enable) {

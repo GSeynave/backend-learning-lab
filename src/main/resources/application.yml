@@ -9,3 +9,8 @@ academy:
   env-var:
     mode: yaml
     max-students: 10
+
+  config:
+    name: Spring Backend Academy
+    lesson-duration: 60m
+    max-students: 10
