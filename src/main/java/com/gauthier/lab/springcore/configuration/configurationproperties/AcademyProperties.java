@@ -15,6 +15,6 @@ public record AcademyProperties(
         @NotBlank String name,
         @NotNull Duration lessonDuration,
         @Min(1) int maxStudents,
-        @NotNull URI documentationUrl
+         URI documentationUrl
 ) {
 }

@@ -7,7 +7,6 @@ import com.gauthier.lab.springcore.beans.componentscanning.ComponentScanningMain
 import com.gauthier.lab.springcore.beans.configuration.ConfigurationMain;
 import com.gauthier.lab.springcore.beans.factory.FactoryMain;
 import com.gauthier.lab.springcore.configuration.applicationyml.ConfigurationYAMLMain;
-import com.gauthier.lab.springcore.configuration.applicationyml.ConfigurationYamlProbe;
 import com.gauthier.lab.springcore.configuration.configurationproperties.ConfigurationPropertiesMain;
 import com.gauthier.lab.springcore.configuration.environmentvar.EnvironmentVariableMain;
 import com.gauthier.lab.springcore.configuration.profiles.ProfilesMain;
@@ -17,6 +16,7 @@ import com.gauthier.lab.springcore.di.constructorinjection.ConstructorInjectionM
 import com.gauthier.lab.springcore.di.fieldsetterinjection.FieldSetterInjectionMain;
 import com.gauthier.lab.springcore.scopes.prototype.PrototypeMain;
 import com.gauthier.lab.springcore.scopes.singleton.SingletonMain;
+import com.gauthier.lab.springcore.springboot.autoconfig.AutoConfigMain;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -34,7 +34,16 @@ public class App {
 
         beanModule(false);
         scopes(false);
-        applicationProperties(true);
+        applicationProperties(false);
+        springBoot(true);
+    }
+
+    private static void springBoot(Boolean enable) {
+        if (!enable) {
+            return;
+        }
+        AutoConfigMain autoConfigMain = new AutoConfigMain();
+        autoConfigMain.execute();
     }
 
     private static void applicationProperties(Boolean enable) {
@@ -53,6 +62,7 @@ public class App {
         ConfigurationPropertiesMain configurationPropertiesMain = new ConfigurationPropertiesMain();
         configurationPropertiesMain.execute();
     }
+
     private static void scopes(Boolean enable) {
         if (!enable) {
             return;
