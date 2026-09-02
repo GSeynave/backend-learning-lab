@@ -11,53 +11,31 @@ public class StartersMain {
     public void execute() {
 
         System.out.println("================================");
-        System.out.println("5.1 - Auto Configuration");
+        System.out.println("5.2 - Starters");
         System.out.println("================================");
 
-        autoConfig();
-        autoConfigB();
-        //autoConfigC();
+        inspectStarters();
 
         System.out.println("================================");
-        System.out.println("End of Auto Configuration");
+        System.out.println("End of Starters");
         System.out.println("================================");
 
     }
 
-    private static void autoConfig() {
+    private static void inspectStarters() {
         System.out.println("Exercise A ");
         try (var context = new SpringApplicationBuilder(ConfigurationPropertiesAppStartup.class)
                 .web(WebApplicationType.NONE)
-                .run("--debug")
+                .run()
         ) {
+            // run mvn dependency:tree to see the dependencies and check the starters
+            // run mvn help:effective-pom to see the effective pom and check the starters
+            // Transitive dependencies = dependency of a dependency
+            // starter = a dependency set
+            // BOM = Bill of Materials = a dependency set with a version management
         } catch (Exception e) {
             System.out.println("Auto Configuration main exception : " + e);
         }
         System.out.println("================================");
     }
-    private static void autoConfigB() {
-        System.out.println("Exercise B ");
-        try (var context = new SpringApplicationBuilder()
-                .web(WebApplicationType.NONE)
-                .run("--debug")
-        ) {
-            context.getBean(AcademyFeature.class);
-        } catch (Exception e) {
-            System.out.println("Auto Configuration main exception : " + e);
-        }
-        System.out.println("================================");
-    }
-    private static void autoConfigC() {
-        System.out.println("Exercise C ");
-        try (var context = new SpringApplicationBuilder(UserAcademyConfiguration.class)
-                .web(WebApplicationType.NONE)
-                .run("--debug")
-        ) {
-            context.getBean(AcademyFeature.class);
-        } catch (Exception e) {
-            System.out.println("Auto Configuration main exception : " + e);
-        }
-        System.out.println("================================");
-    }
-
 }

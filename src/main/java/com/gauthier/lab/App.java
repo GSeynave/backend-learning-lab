@@ -16,7 +16,9 @@ import com.gauthier.lab.springcore.di.constructorinjection.ConstructorInjectionM
 import com.gauthier.lab.springcore.di.fieldsetterinjection.FieldSetterInjectionMain;
 import com.gauthier.lab.springcore.scopes.prototype.PrototypeMain;
 import com.gauthier.lab.springcore.scopes.singleton.SingletonMain;
+import com.gauthier.lab.springcore.springboot.applciationrun.starters.ApplicationRunMain;
 import com.gauthier.lab.springcore.springboot.autoconfig.AutoConfigMain;
+import com.gauthier.lab.springcore.springboot.starters.StartersMain;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -35,15 +37,23 @@ public class App {
         beanModule(false);
         scopes(false);
         applicationProperties(false);
-        springBoot(true);
+        springBoot(args,true);
     }
 
-    private static void springBoot(Boolean enable) {
+    private static void springBoot(String[] args, Boolean enable) {
         if (!enable) {
             return;
         }
+        /*
         AutoConfigMain autoConfigMain = new AutoConfigMain();
         autoConfigMain.execute();
+         */
+
+//        StartersMain startersMain = new StartersMain();
+//        startersMain.execute();
+
+        ApplicationRunMain applicationRunMain = new ApplicationRunMain();
+        applicationRunMain.execute(args);
     }
 
     private static void applicationProperties(Boolean enable) {
