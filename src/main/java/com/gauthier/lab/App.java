@@ -19,6 +19,7 @@ import com.gauthier.lab.springcore.scopes.singleton.SingletonMain;
 import com.gauthier.lab.springcore.springboot.applciationrun.starters.ApplicationRunMain;
 import com.gauthier.lab.springcore.springboot.autoconfig.AutoConfigMain;
 import com.gauthier.lab.springcore.springboot.starters.StartersMain;
+import com.gauthier.lab.springcore.springboot.tomcat.TomcatMain;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -32,7 +33,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication(scanBasePackages = "com.gauthier.lab.web")
 public class App {
     public static void main(String[] args) {
-        SpringApplication.run(App.class, args);
+        //SpringApplication.run(App.class, args);
 
         beanModule(false);
         scopes(false);
@@ -52,8 +53,13 @@ public class App {
 //        StartersMain startersMain = new StartersMain();
 //        startersMain.execute();
 
+        /*
         ApplicationRunMain applicationRunMain = new ApplicationRunMain();
         applicationRunMain.execute(args);
+         */
+
+        TomcatMain tomcatMain = new TomcatMain();
+        tomcatMain.execute();
     }
 
     private static void applicationProperties(Boolean enable) {
