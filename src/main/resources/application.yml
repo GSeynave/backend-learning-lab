@@ -17,3 +17,8 @@ academy:
 
 server:
   port: 0
+
+logging:
+  level:
+    org.springframework.web.servlet.DispatcherServlet: DEBUG
+    org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping: TRACE

@@ -20,6 +20,7 @@ import com.gauthier.lab.springcore.springboot.applciationrun.starters.Applicatio
 import com.gauthier.lab.springcore.springboot.autoconfig.AutoConfigMain;
 import com.gauthier.lab.springcore.springboot.starters.StartersMain;
 import com.gauthier.lab.springcore.springboot.tomcat.TomcatMain;
+import com.gauthier.lab.springcore.springmvc.dispatcherservlet.DispatcherServletMain;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -33,14 +34,22 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication(scanBasePackages = "com.gauthier.lab.web")
 public class App {
     public static void main(String[] args) {
-        //SpringApplication.run(App.class, args);
+        SpringApplication.run(App.class, args);
 
         beanModule(false);
         scopes(false);
         applicationProperties(false);
-        springBoot(args,true);
+        springBoot(args,false);
+        springMvc(true);
     }
 
+    private static void springMvc(Boolean enable) {
+        if (!enable) {
+            return;
+        }
+        DispatcherServletMain dispatcherServletMain = new DispatcherServletMain();
+        dispatcherServletMain.execute();
+    }
     private static void springBoot(String[] args, Boolean enable) {
         if (!enable) {
             return;
