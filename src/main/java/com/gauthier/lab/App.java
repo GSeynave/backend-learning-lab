@@ -40,7 +40,7 @@ public class App {
         scopes(false);
         applicationProperties(false);
         springBoot(args,false);
-        springMvc(true);
+        springMvc(false);
     }
 
     private static void springMvc(Boolean enable) {
