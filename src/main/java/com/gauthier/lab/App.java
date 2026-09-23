@@ -1,5 +1,8 @@
 package com.gauthier.lab;
 
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
 import com.gauthier.lab.springcore.beans.bean.BeanMain;
 import com.gauthier.lab.springcore.beans.beancreation.BeanCreationMain;
 import com.gauthier.lab.springcore.beans.beanlifecycle.BeanLifecycleMain;
@@ -16,123 +19,121 @@ import com.gauthier.lab.springcore.di.constructorinjection.ConstructorInjectionM
 import com.gauthier.lab.springcore.di.fieldsetterinjection.FieldSetterInjectionMain;
 import com.gauthier.lab.springcore.scopes.prototype.PrototypeMain;
 import com.gauthier.lab.springcore.scopes.singleton.SingletonMain;
-import com.gauthier.lab.springcore.springboot.applciationrun.starters.ApplicationRunMain;
-import com.gauthier.lab.springcore.springboot.autoconfig.AutoConfigMain;
-import com.gauthier.lab.springcore.springboot.starters.StartersMain;
 import com.gauthier.lab.springcore.springboot.tomcat.TomcatMain;
 import com.gauthier.lab.springcore.springmvc.dispatcherservlet.DispatcherServletMain;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * The executable web application.
  *
- * <p>Spring Core exercises deliberately create their own small application
+ * <p>
+ * Spring Core exercises deliberately create their own small application
  * contexts. They are not part of this application's component scan, otherwise
- * their alternative beans would all be registered together.</p>
+ * their alternative beans would all be registered together.
+ * </p>
  */
 @SpringBootApplication(scanBasePackages = "com.gauthier.lab.web")
 public class App {
-    public static void main(String[] args) {
-        SpringApplication.run(App.class, args);
+  public static void main(String[] args) {
+    SpringApplication.run(App.class, args);
 
-        beanModule(false);
-        scopes(false);
-        applicationProperties(false);
-        springBoot(args,false);
-        springMvc(false);
+    beanModule(false);
+    scopes(false);
+    applicationProperties(false);
+    springBoot(args, false);
+    springMvc(false);
+  }
+
+  private static void springMvc(Boolean enable) {
+    if (!enable) {
+      return;
     }
+    DispatcherServletMain dispatcherServletMain = new DispatcherServletMain();
+    dispatcherServletMain.execute();
+  }
 
-    private static void springMvc(Boolean enable) {
-        if (!enable) {
-            return;
-        }
-        DispatcherServletMain dispatcherServletMain = new DispatcherServletMain();
-        dispatcherServletMain.execute();
+  private static void springBoot(String[] args, Boolean enable) {
+    if (!enable) {
+      return;
     }
-    private static void springBoot(String[] args, Boolean enable) {
-        if (!enable) {
-            return;
-        }
-        /*
-        AutoConfigMain autoConfigMain = new AutoConfigMain();
-        autoConfigMain.execute();
-         */
+    /*
+     * AutoConfigMain autoConfigMain = new AutoConfigMain();
+     * autoConfigMain.execute();
+     */
 
-//        StartersMain startersMain = new StartersMain();
-//        startersMain.execute();
+    // StartersMain startersMain = new StartersMain();
+    // startersMain.execute();
 
-        /*
-        ApplicationRunMain applicationRunMain = new ApplicationRunMain();
-        applicationRunMain.execute(args);
-         */
+    /*
+     * ApplicationRunMain applicationRunMain = new ApplicationRunMain();
+     * applicationRunMain.execute(args);
+     */
 
-        TomcatMain tomcatMain = new TomcatMain();
-        tomcatMain.execute();
+    TomcatMain tomcatMain = new TomcatMain();
+    tomcatMain.execute();
+  }
+
+  private static void applicationProperties(Boolean enable) {
+    if (!enable) {
+      return;
     }
+    ConfigurationYAMLMain configurationYAMLMain = new ConfigurationYAMLMain();
+    configurationYAMLMain.execute();
 
-    private static void applicationProperties(Boolean enable) {
-        if (!enable) {
-            return;
-        }
-        ConfigurationYAMLMain configurationYAMLMain = new ConfigurationYAMLMain();
-        configurationYAMLMain.execute();
+    ProfilesMain profilesMain = new ProfilesMain();
+    profilesMain.execute();
 
-        ProfilesMain profilesMain = new ProfilesMain();
-        profilesMain.execute();
+    EnvironmentVariableMain environmentVariableMain = new EnvironmentVariableMain();
+    environmentVariableMain.execute();
 
-        EnvironmentVariableMain environmentVariableMain = new EnvironmentVariableMain();
-        environmentVariableMain.execute();
+    ConfigurationPropertiesMain configurationPropertiesMain = new ConfigurationPropertiesMain();
+    configurationPropertiesMain.execute();
+  }
 
-        ConfigurationPropertiesMain configurationPropertiesMain = new ConfigurationPropertiesMain();
-        configurationPropertiesMain.execute();
+  private static void scopes(Boolean enable) {
+    if (!enable) {
+      return;
     }
+    SingletonMain singletonMain = new SingletonMain();
+    singletonMain.execute();
 
-    private static void scopes(Boolean enable) {
-        if (!enable) {
-            return;
-        }
-        SingletonMain singletonMain = new SingletonMain();
-        singletonMain.execute();
+    PrototypeMain prototypeMain = new PrototypeMain();
+    prototypeMain.execute();
+  }
 
-        PrototypeMain prototypeMain = new PrototypeMain();
-        prototypeMain.execute();
+  private static void beanModule(Boolean enable) {
+    if (!enable) {
+      return;
     }
+    // Constructor injection
+    ConstructorInjectionMain constructorInjectionMain = new ConstructorInjectionMain();
+    constructorInjectionMain.execute();
 
-    private static void beanModule(Boolean enable) {
-        if (!enable) {
-            return;
-        }
-        // Constructor injection
-        ConstructorInjectionMain constructorInjectionMain = new ConstructorInjectionMain();
-        constructorInjectionMain.execute();
+    // Setter / Field injection
+    FieldSetterInjectionMain setterInjectionMain = new FieldSetterInjectionMain();
+    setterInjectionMain.execute();
 
-        // Setter / Field injection
-        FieldSetterInjectionMain setterInjectionMain = new FieldSetterInjectionMain();
-        setterInjectionMain.execute();
+    CircularDependencyMain circularDependencyMain = new CircularDependencyMain();
+    circularDependencyMain.execute();
 
-        CircularDependencyMain circularDependencyMain = new CircularDependencyMain();
-        circularDependencyMain.execute();
+    BeanResolutionMain beanResolutionMain = new BeanResolutionMain();
+    beanResolutionMain.execute();
 
-        BeanResolutionMain beanResolutionMain = new BeanResolutionMain();
-        beanResolutionMain.execute();
+    ComponentScanningMain componentScanningMain = new ComponentScanningMain();
+    componentScanningMain.execute();
 
-        ComponentScanningMain componentScanningMain = new ComponentScanningMain();
-        componentScanningMain.execute();
+    BeanCreationMain beanCreationMain = new BeanCreationMain();
+    beanCreationMain.execute();
 
-        BeanCreationMain beanCreationMain = new BeanCreationMain();
-        beanCreationMain.execute();
+    BeanLifecycleMain beanLifecycleMain = new BeanLifecycleMain();
+    beanLifecycleMain.execute();
 
-        BeanLifecycleMain beanLifecycleMain = new BeanLifecycleMain();
-        beanLifecycleMain.execute();
+    BeanMain beanMain = new BeanMain();
+    beanMain.execute();
 
-        BeanMain beanMain = new BeanMain();
-        beanMain.execute();
+    ConfigurationMain configurationMain = new ConfigurationMain();
+    configurationMain.execute();
 
-        ConfigurationMain configurationMain = new ConfigurationMain();
-        configurationMain.execute();
-
-        FactoryMain factoryMain = new FactoryMain();
-        factoryMain.execute();
-    }
+    FactoryMain factoryMain = new FactoryMain();
+    factoryMain.execute();
+  }
 }
