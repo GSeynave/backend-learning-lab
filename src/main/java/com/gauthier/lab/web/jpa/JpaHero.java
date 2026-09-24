@@ -1,10 +1,15 @@
 package com.gauthier.lab.web.jpa;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+
+import com.gauthier.lab.web.jpaentityrelation.JpaGuild;
 
 @Entity
 @Table(name = "jpa_heroes")
@@ -30,6 +35,10 @@ public class JpaHero {
   private String name;
   private int level;
 
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "guild_id")
+  private JpaGuild guild;
+
   public Long getId() {
     return id;
   }
@@ -54,4 +63,11 @@ public class JpaHero {
     this.level = level;
   }
 
+  public JpaGuild getGuild() {
+    return guild;
+  }
+
+  public void setGuild(JpaGuild guild) {
+    this.guild = guild;
+  }
 }
