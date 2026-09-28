@@ -4,14 +4,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.gauthier.lab.web.transactional.TransactionLearningService;
+
 @RestController
 @RequestMapping("/jpa")
 public class JpaController {
 
   JpaLearningService jpaLearningService;
+  NPlusOneService nPlusOneService;
+  TransactionLearningService transactionLearningService;
 
-  public JpaController(JpaLearningService jpaLearningService) {
+  public JpaController(JpaLearningService jpaLearningService, NPlusOneService nPlusOneService,
+      TransactionLearningService transactionLearningService) {
     this.jpaLearningService = jpaLearningService;
+    this.nPlusOneService = nPlusOneService;
+    this.transactionLearningService = transactionLearningService;
   }
 
   @GetMapping("/experiment-1")
@@ -50,4 +57,39 @@ public class JpaController {
     jpaLearningService.experiment6(1L);
   };
 
+  @GetMapping("/experiment-7")
+  public void experiment7() {
+    System.out.println("---- EXPERIMENT 7 ----");
+    nPlusOneService.experimentNPlusOne();
+  };
+
+  @GetMapping("/experiment-8")
+  public void experiment8() {
+    System.out.println("---- EXPERIMENT 8 ----");
+    nPlusOneService.experimentNoNPlusOneWitHJoinFetch();
+  };
+
+  @GetMapping("/transactional/experiment-1")
+  public void transactionalExperiment1() {
+    System.out.println("---- TRANSACTIONAL EXPERIMENT 1 ----");
+    transactionLearningService.outer(1L);
+  };
+
+  @GetMapping("/transactional/experiment-2")
+  public void transactionalExperiment2() {
+    System.out.println("---- TRANSACTIONAL EXPERIMENT 2 ----");
+    transactionLearningService.outer2(1L);
+  };
+
+  @GetMapping("/transactional/experiment-3")
+  public void transactionalExperiment3() {
+    System.out.println("---- TRANSACTIONAL EXPERIMENT 3 ----");
+    transactionLearningService.requiredExperiment();
+  };
+
+  @GetMapping("/transactional/experiment-4")
+  public void transactionalExperiment4() {
+    System.out.println("---- TRANSACTIONAL EXPERIMENT 4 ----");
+    transactionLearningService.requiredNewExperiment();
+  };
 }
