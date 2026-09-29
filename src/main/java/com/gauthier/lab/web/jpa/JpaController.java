@@ -1,9 +1,11 @@
 package com.gauthier.lab.web.jpa;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.gauthier.lab.web.jpa.concurrent.ConcurrentUpdateService;
 import com.gauthier.lab.web.transactional.TransactionLearningService;
 
 @RestController
@@ -13,12 +15,14 @@ public class JpaController {
   JpaLearningService jpaLearningService;
   NPlusOneService nPlusOneService;
   TransactionLearningService transactionLearningService;
+  ConcurrentUpdateService concurrentUpdateService;
 
   public JpaController(JpaLearningService jpaLearningService, NPlusOneService nPlusOneService,
-      TransactionLearningService transactionLearningService) {
+      TransactionLearningService transactionLearningService, ConcurrentUpdateService concurrentUpdateService) {
     this.jpaLearningService = jpaLearningService;
     this.nPlusOneService = nPlusOneService;
     this.transactionLearningService = transactionLearningService;
+    this.concurrentUpdateService = concurrentUpdateService;
   }
 
   @GetMapping("/experiment-1")
@@ -91,5 +95,17 @@ public class JpaController {
   public void transactionalExperiment4() {
     System.out.println("---- TRANSACTIONAL EXPERIMENT 4 ----");
     transactionLearningService.requiredNewExperiment();
+  };
+
+  @GetMapping("/concurrent/experiment-1/{delay}")
+  public void concurrent1(@PathVariable("delay") int delay) {
+    System.out.println("---- Concurrent EXPERIMENT 1 ----");
+    concurrentUpdateService.optimisticLocking(delay);
+  };
+
+  @GetMapping("/concurrent/experiment-2/{delay}")
+  public void concurrent2(@PathVariable("delay") int delay) {
+    System.out.println("---- Concurrent EXPERIMENT 2 ----");
+    concurrentUpdateService.pessimisticIncrement(delay);
   };
 }

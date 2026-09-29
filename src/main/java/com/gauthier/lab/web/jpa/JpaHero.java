@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 
 import com.gauthier.lab.web.jpaentityrelation.JpaGuild;
 
@@ -38,6 +39,9 @@ public class JpaHero {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "guild_id")
   private JpaGuild guild;
+
+  @Version
+  private Long version;
 
   public Long getId() {
     return id;
@@ -70,4 +74,13 @@ public class JpaHero {
   public void setGuild(JpaGuild guild) {
     this.guild = guild;
   }
+
+  public Long getVersion() {
+    return version;
+  }
+
+  public void setVersion(Long version) {
+    this.version = version;
+  }
+
 }
