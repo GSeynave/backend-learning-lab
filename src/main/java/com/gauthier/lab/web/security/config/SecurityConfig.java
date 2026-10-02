@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -21,10 +22,15 @@ public class SecurityConfig {
   SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http
         .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/api/security-lab/public").permitAll()
+            .requestMatchers("/api/security-lab/public", "/api/security-lab/csrf").permitAll()
             .requestMatchers("/api/security-lab/admin").hasRole("ADMIN")
             .anyRequest().authenticated())
+        .csrf(csrf -> csrf.disable()) // forged authenticated requests, cookie sent from browser
+        .sessionManagement(session -> session
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .httpBasic(Customizer.withDefaults());
+    // .formLogin(Customizer.withDefaults()); // session based authentication test
+    // from JSESSIONID
 
     return http.build();
   }

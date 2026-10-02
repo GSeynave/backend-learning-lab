@@ -2,6 +2,7 @@ package com.gauthier.lab.web.security.core;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,5 +37,10 @@ public class SecurityLabController {
   @GetMapping("/admin")
   public String adminEndpoint() {
     return "This is an admin endpoint";
+  }
+
+  @GetMapping("/csrf")
+  public String csrfEndpoint(CsrfToken csrfToken) {
+    return "This is a CSRF endpoint: " + csrfToken.getToken();
   }
 }
