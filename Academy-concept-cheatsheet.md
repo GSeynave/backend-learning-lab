@@ -334,3 +334,206 @@
 
 - Maven dependency scopes and classpaths affect when dependencies are available.
 - Compilation, packaging, dependency resolution, and runtime loading are different stages.
+
+### Lesson 3 — Method Security & Authorization Design
+
+#### URL security vs method security
+
+- Request matchers protect HTTP routes before controller execution.
+- Method security protects invocation of application/service methods.
+- Method security can protect an operation even when called from another entry point.
+
+#### Enable method security
+
+```java
+@EnableMethodSecurity
+```
+
+- Enables Spring Security method interception for annotations such as `@PreAuthorize`.
+- Method-security annotations rely on Spring proxy/interceptor behavior.
+
+#### `@PreAuthorize`
+
+```java
+@PreAuthorize("hasRole('ADMIN')")
+```
+
+- Evaluated before the method executes.
+- Can use:
+  - current `Authentication`;
+  - method arguments such as `#orderId`;
+  - authorization helpers such as `hasRole(...)`;
+  - other Spring beans.
+
+Example:
+
+```java
+@PreAuthorize(
+    "hasRole('ADMIN') or @orderAuthorization.canEdit(#orderId, authentication)"
+)
+```
+
+#### Authorization components
+
+- Keep complex authorization policy in normal Java components rather than long annotation expressions.
+- Benefits:
+  - readability;
+  - unit testing;
+  - maintainability;
+  - isolation of authorization policy.
+
+Example:
+
+```java
+@Component
+class OrderAuthorization {
+
+    boolean canEdit(UUID orderId, Authentication authentication) {
+        ...
+    }
+}
+```
+
+#### Authorization vs domain invariants
+
+- Authorization policy asks: **may this actor perform this operation?**
+- Domain rule asks: **is this operation valid for the current business state?**
+
+Example:
+
+```text
+Owner or admin may edit order
+→ authorization
+
+Cancelled order cannot be edited
+→ domain invariant
+```
+
+- Domain code should generally remain unaware of Spring Security types such as `Authentication` and `SecurityContext`.
+
+#### Resource-dependent authorization
+
+- `@PreAuthorize` is useful when authorization can be evaluated cheaply before method execution.
+- If the resource must be loaded anyway, it can be cleaner to:
+
+```text
+load resource
+→ authorization component checks loaded resource
+→ execute domain behavior
+```
+
+instead of:
+
+```text
+authorization DB query
+→ method starts
+→ resource DB query
+```
+
+- Method-security annotations are a tool, not a requirement for every authorization rule.
+
+#### Self-invocation
+
+- Method security relies on calls crossing the Spring proxy.
+- Internal calls such as:
+
+```java
+this.adminOnly();
+```
+
+do not cross the proxy.
+
+Therefore:
+
+```java
+public void outer() {
+    adminOnly();
+}
+
+@PreAuthorize("hasRole('ADMIN')")
+public void adminOnly() {
+}
+```
+
+can bypass the authorization interceptor.
+
+Mental model:
+
+```text
+external caller
+→ Spring proxy
+→ interceptor
+→ secured method
+```
+
+versus:
+
+```text
+same bean
+→ this.securedMethod()
+→ proxy bypassed
+→ annotation not evaluated
+```
+
+#### `@PostAuthorize`
+
+- Evaluated after the method executes.
+- Can use:
+
+```text
+returnObject
+```
+
+which represents the returned value.
+
+Example:
+
+```java
+@PostAuthorize(
+    "returnObject.ownerId == authentication.name"
+)
+```
+
+- Useful mainly for read-style operations where authorization depends on returned data.
+- Dangerous for writes because side effects may already have happened before authorization fails.
+
+#### `@PreFilter` / `@PostFilter`
+
+- `@PreFilter` filters collection input before method execution.
+- `@PostFilter` filters collection output after method execution.
+- `filterObject` represents the current collection element.
+
+Be careful with large datasets:
+
+```text
+load huge dataset
+→ filter in Java
+```
+
+may be much worse than:
+
+```text
+filter directly in DB query
+```
+
+#### Method-security testing
+
+Two different things need testing:
+
+```text
+Authorization component unit tests
+→ is the policy logic correct?
+
+Method-security integration tests
+→ does Spring actually enforce the policy?
+```
+
+Integration tests should prove:
+
+- method security is enabled;
+- proxy/interceptor is active;
+- annotation expression resolves;
+- referenced bean names are correct;
+- method parameters resolve correctly;
+- allowed callers succeed;
+- forbidden callers are rejected.
