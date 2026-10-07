@@ -3,6 +3,7 @@ package com.gauthier.lab.web.security.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -16,6 +17,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
 
   @Bean
@@ -24,6 +26,7 @@ public class SecurityConfig {
         .authorizeHttpRequests(auth -> auth
             .requestMatchers("/api/security-lab/public", "/api/security-lab/csrf").permitAll()
             .requestMatchers("/api/security-lab/admin").hasRole("ADMIN")
+            .requestMatchers("/api/security-lab/method-admin").authenticated()
             .anyRequest().authenticated())
         .csrf(csrf -> csrf.disable()) // forged authenticated requests, cookie sent from browser
         .sessionManagement(session -> session

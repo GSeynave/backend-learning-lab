@@ -7,11 +7,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.gauthier.lab.web.security.methodsecurity.SecurityLabService;
+
 @RestController
 @RequestMapping("/api/security-lab")
 public class SecurityLabController {
 
   AuthenticationManager authenticationManager;
+  SecurityLabService securityLabService;
+
+  public SecurityLabController(SecurityLabService securityLabService) {
+    this.securityLabService = securityLabService;
+  }
 
   @GetMapping("/hello")
   public String hello(Authentication authentication) {
@@ -42,5 +49,15 @@ public class SecurityLabController {
   @GetMapping("/csrf")
   public String csrfEndpoint(CsrfToken csrfToken) {
     return "This is a CSRF endpoint: " + csrfToken.getToken();
+  }
+
+  @GetMapping("/method-admin")
+  public String methodAdminEndpoint() {
+    return securityLabService.adminMethod();
+  }
+
+  @GetMapping("/method-self")
+  public String methodSelf() {
+    return securityLabService.callAdminMethod();
   }
 }
