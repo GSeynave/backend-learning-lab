@@ -537,3 +537,87 @@ Integration tests should prove:
 - method parameters resolve correctly;
 - allowed callers succeed;
 - forbidden callers are rejected.
+
+#### Security test levels
+
+### Unit test
+
+Use for pure authorization/business policy logic.
+
+Example:
+
+```text
+OrderAuthorization.canEdit(...)
+```
+
+Proves:
+
+```text
+authorization rule itself is correct
+```
+
+Does NOT prove Spring Security wiring.
+
+---
+
+### Method-security integration test
+
+Test a Spring-managed service containing:
+
+```java
+@PreAuthorize(...)
+```
+
+Proves:
+
+```text
+Spring proxy/interceptor is active
+@PreAuthorize is evaluated
+SpEL parameters/beans resolve
+allowed users pass
+forbidden users are rejected
+```
+
+The service must come from the Spring context:
+
+```java
+@Autowired
+SecurityLabService securityLabService;
+```
+
+not:
+
+```java
+new SecurityLabService();
+```
+
+---
+
+### MockMvc security test
+
+Use for HTTP-level security.
+
+Proves:
+
+```text
+HTTP request
+→ SecurityFilterChain
+→ request matcher
+→ authorization
+→ expected HTTP status
+```
+
+Typical matrix:
+
+```text
+anonymous → 401
+wrong role → 403
+correct role → 200
+```
+
+Useful for catching:
+
+- matcher typos;
+- wrong role configuration;
+- unsafe fallback rules;
+- forgotten route protection.
