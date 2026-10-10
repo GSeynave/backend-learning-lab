@@ -25,13 +25,15 @@ public class SecurityConfig {
     http
         .authorizeHttpRequests(auth -> auth
             .requestMatchers("/api/security-lab/public", "/api/security-lab/csrf").permitAll()
-            .requestMatchers("/api/security-lab/admin").hasRole("ADMIN")
+            // .requestMatchers("/api/security-lab/admin").hasRole("ADMIN")
+            .requestMatchers("/api/security-lab/admin").hasAuthority("SCOPE_admin")
             .requestMatchers("/api/security-lab/method-admin").authenticated()
             .anyRequest().authenticated())
         .csrf(csrf -> csrf.disable()) // forged authenticated requests, cookie sent from browser
         .sessionManagement(session -> session
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        .httpBasic(Customizer.withDefaults());
+        // .httpBasic(Customizer.withDefaults());
+        .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));
     // .formLogin(Customizer.withDefaults()); // session based authentication test
     // from JSESSIONID
 

@@ -621,3 +621,130 @@ Useful for catching:
 - wrong role configuration;
 - unsafe fallback rules;
 - forgotten route protection.
+
+### Lesson 5 — OAuth2 Resource Server & Real JWT Configuration
+
+#### OAuth2 / Access Token / JWT
+
+- OAuth2 = authorization framework.
+- Access token = credential presented by a client to a Resource Server.
+- JWT = one possible format for an access token.
+- Not every JWT is an OAuth2 access token, and not every OAuth2 access token is a JWT.
+
+#### Authorization Server vs Resource Server
+
+- Authorization Server:
+  - authenticates/authorizes according to OAuth2 flow;
+  - issues access tokens;
+  - owns signing capability.
+- Resource Server:
+  - exposes protected APIs/resources;
+  - validates access tokens;
+  - authorizes access.
+
+#### JWT Resource Server flow
+
+```text
+Bearer token
+→ Security filter
+→ AuthenticationManager
+→ JwtAuthenticationProvider
+→ JwtDecoder
+→ validated Jwt
+→ authenticated Authentication
+→ SecurityContext
+→ authorization
+```
+
+#### `JwtDecoder`
+
+- Parses JWT.
+- Verifies signature.
+- Validates claims such as expiration/issuer/audience.
+- Returns trusted JWT data.
+
+#### `JwtAuthenticationProvider`
+
+- Handles JWT authentication.
+- Uses `JwtDecoder`.
+- Converts validated JWT data into authenticated Spring Security `Authentication`.
+
+#### OAuth2 scopes
+
+Spring maps OAuth2 scopes by default to authorities prefixed with:
+
+```text
+SCOPE_
+```
+
+Example:
+
+```text
+scope = admin
+→ SCOPE_admin
+```
+
+Use:
+
+```java
+hasAuthority("SCOPE_admin")
+```
+
+Not:
+
+```java
+hasRole("SCOPE_admin")
+```
+
+because:
+
+```text
+hasRole("SCOPE_admin")
+→ checks ROLE_SCOPE_admin
+```
+
+#### Failure behavior
+
+```text
+valid JWT + missing authority
+→ authentication succeeds
+→ authorization fails
+→ 403
+
+expired JWT
+→ authentication fails
+→ 401
+
+invalid signature
+→ authentication fails
+→ 401
+```
+
+#### HS256 vs RS256
+
+HS256:
+
+- shared secret signs and verifies;
+- Resource Server possessing the secret can also sign tokens;
+- leaking one shared secret can enable token forgery.
+
+RS256:
+
+- private key signs;
+- public key verifies;
+- Resource Servers only need the public key;
+- compromising a Resource Server does not reveal signing capability.
+
+#### Local JWT validation
+
+Advantages:
+
+- avoids an auth-server network call on every request;
+- lower latency;
+- less load on Authorization Server;
+- better resilience if Authorization Server is temporarily unavailable.
+
+Tradeoff:
+
+- token claims can become stale;
+- revoked permissions/account state may remain effective until token expiry or another revocation strategy applies.
