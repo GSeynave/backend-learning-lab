@@ -60,4 +60,18 @@ public class SecurityLabController {
   public String methodSelf() {
     return securityLabService.callAdminMethod();
   }
+
+  @GetMapping("/me")
+  public String me(Authentication authentication) {
+    return """
+        authenticationClass=%s
+        name=%s
+        principalClass=%s
+        authorities=%s
+        """.formatted(
+        authentication.getClass().getName(),
+        authentication.getName(),
+        authentication.getPrincipal().getClass().getName(),
+        authentication.getAuthorities());
+  }
 }

@@ -22,6 +22,7 @@ logging:
   level:
     org.springframework.web.servlet.DispatcherServlet: DEBUG
     org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping: TRACE
+    org.springframework.security: TRACE
 
 spring:
   datasource:
@@ -42,3 +43,12 @@ spring:
       resourceserver:
         jwt:
           public-key-location: classpath:keys/public.pem
+      client:
+        registration:
+          google:
+            client-id: ${CLIENT_ID}
+            client-secret: ${CLIENT_SECRET}
+            scope:
+              - openid
+              - profile
+              - email

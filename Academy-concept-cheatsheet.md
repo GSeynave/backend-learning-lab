@@ -748,3 +748,159 @@ Tradeoff:
 
 - token claims can become stale;
 - revoked permissions/account state may remain effective until token expiry or another revocation strategy applies.
+
+### Lesson 6 — OAuth2 & OIDC in Practice
+
+#### OAuth2 actors
+
+- Resource Owner: the user.
+- OAuth Client: the application requesting authorization.
+- Authorization Server: issues tokens after authorization.
+- Resource Server: hosts protected APIs/resources.
+
+#### Authorization Code flow
+
+```text
+Client
+→ Authorization Server /authorize
+
+User authenticates
+
+Authorization Server
+→ redirects with authorization code
+
+Client
+→ /token with authorization code
+→ receives tokens
+```
+
+- Authorization code is short-lived and single-use.
+- Real tokens are issued only after the client redeems the code.
+
+#### PKCE
+
+- Client generates `code_verifier`.
+- Sends `code_challenge = hash(code_verifier)` during authorization.
+- Sends `code_verifier` during token exchange.
+- Stolen authorization code alone is not sufficient.
+
+#### Scopes
+
+- Scope = permission/capability requested by the OAuth Client.
+- Authorization Server decides whether the requested scope is granted.
+- Example:
+
+```text
+orders.read
+→ granted in Access Token
+→ Spring maps to SCOPE_orders.read
+```
+
+#### OAuth2 vs OIDC
+
+- OAuth2 = authorization framework.
+- OIDC = authentication/identity layer on top of OAuth2.
+- `openid` scope enables OIDC behavior.
+
+#### ID Token vs Access Token
+
+```text
+ID Token
+→ consumed by OAuth/OIDC Client
+→ identity/authentication information
+
+Access Token
+→ consumed by Resource Server
+→ API authorization credential
+```
+
+#### Important JWT/OIDC claims
+
+```text
+iss → issuer
+aud → intended audience
+sub → subject
+exp → expiration
+```
+
+- Decoding is not validation.
+- Trust requires signature and claim validation.
+
+#### UserInfo
+
+- Optional OIDC endpoint for additional user claims.
+- Called using an Access Token.
+- `userinfo.sub` should correspond to the authenticated subject.
+
+#### SPA vs BFF
+
+SPA:
+
+```text
+React
+→ OAuth Client
+→ holds Access Token
+→ Resource Server
+```
+
+BFF:
+
+```text
+Browser
+→ JSESSIONID
+→ Spring BFF
+→ Access Token
+→ Resource Server
+```
+
+- SPA is a public client: browser code cannot safely keep secrets.
+- BFF can be confidential: tokens/secrets remain server-side.
+
+#### Stateful vs stateless in BFF architecture
+
+```text
+Browser → BFF
+→ stateful session / JSESSIONID
+
+BFF → Resource Server
+→ stateless Bearer Access Token
+```
+
+- Session lifetime and Access Token lifetime are separate.
+- Expired Access Token may be renewed using a Refresh Token.
+
+#### Spring OAuth configuration
+
+```text
+oauth2Client()
+→ general OAuth2 client capabilities
+
+oauth2Login()
+→ user login via OAuth2/OIDC
+→ handles callback
+→ establishes authenticated session
+```
+
+#### Practical Google login flow
+
+```text
+Browser
+→ /oauth2/authorization/google
+
+Spring BFF
+→ redirect to Google
+
+Google
+→ authenticate user
+→ redirect to /login/oauth2/code/google?code=...
+
+Spring BFF
+→ exchange code at token endpoint
+→ receive ID Token + Access Token
+→ validate login
+→ create OAuth2AuthenticationToken
+→ store SecurityContext in HTTP session
+
+Browser
+→ sends JSESSIONID on later requests
+```

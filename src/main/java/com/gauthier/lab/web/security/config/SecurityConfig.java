@@ -6,7 +6,6 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -24,16 +23,24 @@ public class SecurityConfig {
   SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http
         .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/api/security-lab/public", "/api/security-lab/csrf").permitAll()
+            .requestMatchers(
+                "/api/security-lab/public", "/api/security-lab/csrf",
+                "/oauth2/authorization/**",
+                "/lab/flags/**",
+                "/lab/**",
+                "/login/oauth2/code/**")
+            .permitAll()
             // .requestMatchers("/api/security-lab/admin").hasRole("ADMIN")
-            .requestMatchers("/api/security-lab/admin").hasAuthority("SCOPE_admin")
-            .requestMatchers("/api/security-lab/method-admin").authenticated()
+            // .requestMatchers("/api/security-lab/admin").hasAuthority("SCOPE_admin")
+            // .requestMatchers("/api/security-lab/method-admin").authenticated()
             .anyRequest().authenticated())
-        .csrf(csrf -> csrf.disable()) // forged authenticated requests, cookie sent from browser
-        .sessionManagement(session -> session
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        // .csrf(csrf -> csrf.disable()) // forged authenticated requests, cookie sent
+        // from browser
+        // .sessionManagement(session -> session
+        // .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         // .httpBasic(Customizer.withDefaults());
-        .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));
+        .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
+        .oauth2Login(Customizer.withDefaults());
     // .formLogin(Customizer.withDefaults()); // session based authentication test
     // from JSESSIONID
 

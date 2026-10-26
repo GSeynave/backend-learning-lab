@@ -4,3 +4,5 @@
 
 .idea
 /private.pem
+
+.env
