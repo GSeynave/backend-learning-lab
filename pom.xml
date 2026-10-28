@@ -67,6 +67,16 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-oauth2-client</artifactId>
     </dependency>
+    <dependency>
+      <groupId>dev.openfeature</groupId>
+      <artifactId>sdk</artifactId>
+      <version>1.23.0</version>
+    </dependency>
+    <dependency>
+      <groupId>dev.openfeature.contrib.providers</groupId>
+      <artifactId>flagsmith</artifactId>
+      <version>0.0.13</version>
+    </dependency>
   </dependencies>
   <build>
     <plugins>

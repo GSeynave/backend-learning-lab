@@ -1,4 +1,4 @@
 package com.gauthier.lab.web.featureflag.lab.provider;
 
-public record FlagResponse(String flagKey, boolean enabled) {
+public record FlagResponse(String flagKey, Object value) {
 }

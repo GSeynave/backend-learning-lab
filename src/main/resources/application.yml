@@ -20,9 +20,9 @@ server:
 
 logging:
   level:
-    org.springframework.web.servlet.DispatcherServlet: DEBUG
-    org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping: TRACE
-    org.springframework.security: TRACE
+    org.springframework.web.servlet.DispatcherServlet: INFO
+    org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping: INFO
+    org.springframework.security: INFO
 
 spring:
   datasource:
@@ -52,3 +52,8 @@ spring:
               - openid
               - profile
               - email
+
+flagsmith:
+  userId: Development_user_123456
+  base-url: http://localhost:8000/api/v1/
+  environment-key: ser.f6gqf46E8Harphh6mwGrJV

@@ -1,5 +1,7 @@
 package com.gauthier.lab.web.featureflag.lab.provider;
 
+import java.util.List;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,12 +18,22 @@ public class CheckoutController {
   }
 
   @GetMapping("/checkout")
-  public String getCheckout(@RequestParam String userId) {
-    return checkoutCalculatorService.calculateCheckout(userId);
+  public String getCheckout(@RequestParam String userId, @RequestParam String country) {
+    return checkoutCalculatorService.calculateCheckout(userId, country);
   }
 
   @GetMapping("/discount")
-  public String getDiscount(@RequestParam String userId) {
-    return checkoutCalculatorService.calculateDiscount(userId);
+  public String getDiscount(@RequestParam String userId, @RequestParam String country) {
+    return checkoutCalculatorService.calculateDiscount(userId, country);
+  }
+
+  @GetMapping("/variant")
+  public String getCheckoutVariant(@RequestParam String userId, @RequestParam String country) {
+    return checkoutCalculatorService.checkoutVariant(userId, country);
+  }
+
+  @GetMapping("/topics")
+  public List<String> getTopics() {
+    return checkoutCalculatorService.getTopics();
   }
 }

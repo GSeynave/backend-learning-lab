@@ -11,10 +11,17 @@ import org.springframework.web.bind.annotation.RestController;
 public class FakeFeatureFlagController {
 
   @GetMapping("/{flagKey}")
-  public FlagResponse getFlag(@PathVariable String flagKey, @RequestParam String userId) {
-    boolean enabled = flagKey.equals("new-checkout")
-        && userId.equals("42");
-    return new FlagResponse(flagKey, enabled);
+  public FlagResponse getFlag(@PathVariable String flagKey, @RequestParam String userId, @RequestParam String country) {
+    if (userId.equals("error")) {
+      throw new RuntimeException("This is a fake controller, it should not be called in production");
+    }
+    if (flagKey.equals("new-checkout") && userId.equals("42") && country.equals("FR")) {
+      return new FlagResponse(flagKey, "true");
+    }
+    if (flagKey.equals("checkout-variant") && userId.equals("42") && country.equals("FR")) {
+      return new FlagResponse(flagKey, "variant-a");
+    }
+    return null;
   }
 
 }
